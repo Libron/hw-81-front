@@ -1,5 +1,5 @@
-import React, {Component, Fragment} from 'react';
-import {Form, FormGroup, Input, Label} from "reactstrap";
+import React, {Component} from 'react';
+import {Button, Form, FormGroup, Input} from "reactstrap";
 
 import axios from '../axios-api';
 
@@ -28,15 +28,16 @@ class MainPage extends Component {
 
     render() {
         return (
-            <Fragment>
-                <Form onSubmit={this.submitFormHandler}>
+            <div style={{width: '50%', margin: '10px auto'}}>
+                <h2>Shorten your link!</h2>
+                <Form onSubmit={this.submitFormHandler} style={{marginBottom: '30px'}}>
                     <FormGroup>
-                        <Label for="originalUrl">URL</Label>
                         <Input type="text" name="originalUrl" id="originalUrl" placeholder="http://namba.kg" onChange={this.inputChangeHandler} />
                     </FormGroup>
+                    <Button type="submit" outline color="secondary">Shorten</Button>
                 </Form>
-                    <Link to={'/' + this.state.shortUrl}>http://localhost:8000/{this.state.shortUrl}</Link>
-            </Fragment>
+                {this.state.shortUrl ? <Link to={'/' + this.state.shortUrl}>http://localhost:8000/{this.state.shortUrl}</Link> : null}
+            </div>
         );
     }
 }
