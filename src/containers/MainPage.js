@@ -1,35 +1,42 @@
-import React, {Component} from 'react';
-import axios from "axios";
-import {Link} from "react-router-dom";
-import Form from "../components/Form/Form";
+import React, {Component, Fragment} from 'react';
+import {Form, FormGroup, Input, Label} from "reactstrap";
 
-const baseUrl = 'http://localhost:8000/';
+import axios from '../axios-api';
+
+import {Link} from 'react-router-dom';
 
 class MainPage extends Component {
+
     state = {
+        originalUrl: '',
         shortUrl: ''
     };
 
-    submit = (link) => {
-        // axios.post(baseUrl + 'links', link)
-        //     .then(response => {
-        //         console.log(response.data);
-        //         this.setState({shortUrl: response.data.shortUrl})})
-        //     .catch(error => {
-        //         throw new Error(error);
-        //     });
+    submitFormHandler = event => {
+        event.preventDefault();
+
+        axios.post('/links', {originalUrl: this.state.originalUrl}).then(response => {
+            this.setState({shortUrl: response.data.shortUrl});
+        })
+    };
+
+    inputChangeHandler = event => {
+        this.setState({
+            [event.target.name]: event.target.value
+        });
     };
 
     render() {
         return (
-            <div>
-                {/*<Form />*/}
-                <h1>Hello</h1>
-                <Link to="142144">
-                    asdasdasd
-                    {this.state.shortUrl ? baseUrl + this.state.shortUrl : null}
-                </Link>
-            </div>
+            <Fragment>
+                <Form onSubmit={this.submitFormHandler}>
+                    <FormGroup>
+                        <Label for="originalUrl">URL</Label>
+                        <Input type="text" name="originalUrl" id="originalUrl" placeholder="http://namba.kg" onChange={this.inputChangeHandler} />
+                    </FormGroup>
+                </Form>
+                    <Link to={'/' + this.state.shortUrl}>http://localhost:8000/{this.state.shortUrl}</Link>
+            </Fragment>
         );
     }
 }
